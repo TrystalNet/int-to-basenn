@@ -4,6 +4,7 @@ export = IntToBaseNN;
 declare namespace IntToBaseNN {
   const BASE62CHARS : string
   const BASE64CHARS : string
+  const BASE36CHARS : string
   const BASE26CHARS : string
   const BASE27CHARS : string
 
@@ -30,4 +31,8 @@ declare namespace IntToBaseNN {
   const Base26 : Converter
   const base26Encode : IEncodeFunc
   const base26Decode : IDecodeFunc
+
+  const Base36 : Converter
+  const base36Encode : IEncodeFunc
+  const base36Decode : IDecodeFunc
 }

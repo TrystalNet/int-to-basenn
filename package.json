@@ -1,6 +1,6 @@
 {
   "name": "@trystal/int-to-basenn",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Convert an integer into a variety of baseNN formats (base62, base26, base4,...)",
   "main": "index.js",
   "scripts": {
