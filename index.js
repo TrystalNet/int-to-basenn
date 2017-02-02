@@ -1,6 +1,7 @@
 "use strict";
 exports.BASE62CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 exports.BASE64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+exports.BASE36CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 exports.BASE26CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 exports.BASE27CHARS = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function validateIntval(intval) {
@@ -70,3 +71,6 @@ exports.base64Decode = (strval) => exports.Base64.decode(strval);
 exports.Base26 = new Converter(exports.BASE26CHARS);
 exports.base26Encode = (intval) => exports.Base26.encode(intval);
 exports.base26Decode = (strval) => exports.Base26.decode(strval);
+exports.Base36 = new Converter(exports.BASE36CHARS);
+exports.base36Encode = (intval) => exports.Base36.encode(intval);
+exports.base36Decode = (strval) => exports.Base36.decode(strval);
