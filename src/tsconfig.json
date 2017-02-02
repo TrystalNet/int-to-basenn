@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": false,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "strictNullChecks": true, 
+    "declaration": false,
+    "outDir": ".."
+  }  ,
+  "files": [
+    "./index.ts",
+    "./test.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
