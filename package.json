@@ -8,7 +8,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "base62": "^1.1.2"
-  }
+  "dependencies": {}
 }
