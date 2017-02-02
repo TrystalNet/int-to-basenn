@@ -1,5 +1,6 @@
 export const BASE62CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 export const BASE64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+export const BASE36CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE26CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE27CHARS = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -68,4 +69,8 @@ export const base64Decode = (strval:string) => Base64.decode(strval)
 export const Base26 = new Converter(BASE26CHARS)
 export const base26Encode = (intval:number) => Base26.encode(intval)
 export const base26Decode = (strval:string) => Base26.decode(strval)
+
+export const Base36 = new Converter(BASE36CHARS)
+export const base36Encode = (intval:number) => Base36.encode(intval)
+export const base36Decode = (strval:string) => Base36.decode(strval)
 
