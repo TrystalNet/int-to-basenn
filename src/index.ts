@@ -3,6 +3,11 @@ export const BASE64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 export const BASE36CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE26CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE27CHARS = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+export enum CASING { Uppercase, Lowercase, Mixed }
+
+const UPPER = CASING.Uppercase
+const LOWER = CASING.Lowercase
+const MIXED = CASING.Mixed
 
 function validateIntval(intval:number) {
   if(typeof intval !== 'number') throw 'Intval must be a number'
@@ -15,11 +20,12 @@ function validateCharset(charset:string) {
   if(new Set(charset).size < charset.length) throw 'CharSet cannot have duplicate characters'
 }
 
-function validateChar(char:string, charval:number, strval:string):void {
-  if(charval >= 0) return
-  const msg = `Invalid character '${char}' in '${strval}'`
-  throw msg
+function identifyCasing(charset:string) {
+  if(charset === charset.toLowerCase()) return LOWER
+  if(charset === charset.toUpperCase()) return UPPER
+  return MIXED
 }
+
 
 export function encode(intval:number, charset:string, validate=true):string {
   if(validate) {
@@ -36,41 +42,53 @@ export function encode(intval:number, charset:string, validate=true):string {
   return arr.reverse().join('')
 }
 
-export function decode(strval:string, charset:string, validate=true) {
+function lookup(char:string, charset:string, casing:CASING) {
+  switch(casing) {
+    case LOWER: return charset.indexOf(char.toLowerCase())
+    case UPPER: return charset.indexOf(char.toUpperCase())
+  }
+  return charset.indexOf(char)
+}
+
+export function decode(strval:string, charset:string, validate=true, casing:CASING|null=null) {
   if(validate) validateCharset(charset)
   if(!strval) return 0
+  if(casing === null) casing = identifyCasing(charset)
   let base = charset.length
   return strval.split('').reduce((intval,char) => { 
-    const charval = charset.indexOf(char)
-    if(validate) validateChar(char, charval, strval)
-    return (intval * base) + charset.indexOf(char)
+    const charval = lookup(char, charset, casing as CASING)
+    if(charval < 0) throw `Invalid character '${char}' in '${strval}'`
+    return (intval * base) + charval
   }, 0) 
 }
 
-
 export class Converter {
-  constructor(charset:string=BASE62CHARS) {
+  constructor(charset:string=BASE62CHARS, casing:CASING|null=null) {
       validateCharset(charset)
+      if(casing === null) casing = identifyCasing(charset)
       this.encode = (intval:number) => encode(intval, charset, false)
-      this.decode = (str:string)    => decode(str,    charset, false)
+      this.decode = (str:string)    => decode(str,    charset, false, casing)
   }
   encode : (intval:number) => string
   decode : (strval:string) => number
 }
 
-export const Base62 = new Converter()
+export const Base62 = new Converter(BASE62CHARS, MIXED)
 export const base62Encode = (intval:number) => Base62.encode(intval)
 export const base62Decode = (strval:string) => Base62.decode(strval)
 
-export const Base64 = new Converter(BASE64CHARS)
+export const Base64 = new Converter(BASE64CHARS, MIXED)
 export const base64Encode = (intval:number) => Base64.encode(intval)
 export const base64Decode = (strval:string) => Base64.decode(strval)
 
-export const Base26 = new Converter(BASE26CHARS)
+export const Base26 = new Converter(BASE26CHARS, UPPER)
 export const base26Encode = (intval:number) => Base26.encode(intval)
 export const base26Decode = (strval:string) => Base26.decode(strval)
 
-export const Base36 = new Converter(BASE36CHARS)
+export const Base36 = new Converter(BASE36CHARS, UPPER)
 export const base36Encode = (intval:number) => Base36.encode(intval)
 export const base36Decode = (strval:string) => Base36.decode(strval)
 
+
+var x = base26Decode('dw')
+console.log(x)

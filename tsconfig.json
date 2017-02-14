@@ -8,11 +8,10 @@
     "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true, 
     "declaration": false,
-    "outDir": ".."
+    "outDir": "."
   }  ,
-  "files": [
-    "./index.ts",
-    "./test.ts"
+  "include": [
+      "src/**/*"
   ],
   "exclude": [
     "node_modules"
