@@ -7,18 +7,21 @@ declare namespace IntToBaseNN {
   const BASE36CHARS : string
   const BASE26CHARS : string
   const BASE27CHARS : string
+  enum CASING { Uppercase, Lowercase, Mixed }
 
   interface IEncodeFunc { (intval:number) : string }
   interface IDecodeFunc { (strval:string) : number }
 
   class Converter {
-    constructor(charset:string)
+    charset:string
+    casing:CASING
+    constructor(charset=BASE62CHARS, casing=CASING.Mixed)
     encode : IEncodeFunc
     decode : IDecodeFunc
   }
 
-  function encode(intval:number, charset:string, validate:boolean):string;
-  function decode(strval:string, charset:string, validate:boolean):number;
+  function encode(intval:number, charset=BASE62CHARS, validate=false):string;
+  function decode(strval:string, charset=BASE62CHARS, validate=false, casing:CASING|null=null):number;
 
   const Base62 : Converter
   const base62Encode : IEncodeFunc

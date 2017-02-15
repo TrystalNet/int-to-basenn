@@ -15,7 +15,7 @@ function validateIntval(intval:number) {
 }
 
 function validateCharset(charset:string) {
-  if(typeof charset !== 'string') throw 'CharSet must be a string'
+  if(typeof charset !== 'string') throw `CharSet must be a string, got ${charset}`
   if(charset.length < 2) throw 'CharSet must have at least two characters'
   if(new Set(charset).size < charset.length) throw 'CharSet cannot have duplicate characters'
 }
@@ -26,8 +26,7 @@ function identifyCasing(charset:string) {
   return MIXED
 }
 
-
-export function encode(intval:number, charset:string, validate=true):string {
+export function encode(intval:number, charset=BASE62CHARS, validate=true):string {
   if(validate) {
     validateCharset(charset)
     validateIntval(intval)
@@ -50,7 +49,7 @@ function lookup(char:string, charset:string, casing:CASING) {
   return charset.indexOf(char)
 }
 
-export function decode(strval:string, charset:string, validate=true, casing:CASING|null=null) {
+export function decode(strval:string, charset=BASE62CHARS, validate=false, casing:CASING|null=null) {
   if(validate) validateCharset(charset)
   if(!strval) return 0
   if(casing === null) casing = identifyCasing(charset)
@@ -63,11 +62,15 @@ export function decode(strval:string, charset:string, validate=true, casing:CASI
 }
 
 export class Converter {
-  constructor(charset:string=BASE62CHARS, casing:CASING|null=null) {
+  public charset:string // for convenience only
+  public casing:CASING // for convenience only
+  constructor(charset=BASE62CHARS, casing:CASING|null=null) {
       validateCharset(charset)
       if(casing === null) casing = identifyCasing(charset)
       this.encode = (intval:number) => encode(intval, charset, false)
       this.decode = (str:string)    => decode(str,    charset, false, casing)
+      this.charset = charset
+      this.casing = casing
   }
   encode : (intval:number) => string
   decode : (strval:string) => number
@@ -88,7 +91,3 @@ export const base26Decode = (strval:string) => Base26.decode(strval)
 export const Base36 = new Converter(BASE36CHARS, UPPER)
 export const base36Encode = (intval:number) => Base36.encode(intval)
 export const base36Decode = (strval:string) => Base36.decode(strval)
-
-
-var x = base26Decode('dw')
-console.log(x)

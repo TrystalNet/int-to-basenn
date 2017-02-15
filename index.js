@@ -21,7 +21,7 @@ function validateIntval(intval) {
 }
 function validateCharset(charset) {
     if (typeof charset !== 'string')
-        throw 'CharSet must be a string';
+        throw `CharSet must be a string, got ${charset}`;
     if (charset.length < 2)
         throw 'CharSet must have at least two characters';
     if (new Set(charset).size < charset.length)
@@ -34,7 +34,7 @@ function identifyCasing(charset) {
         return UPPER;
     return MIXED;
 }
-function encode(intval, charset, validate = true) {
+function encode(intval, charset = exports.BASE62CHARS, validate = true) {
     if (validate) {
         validateCharset(charset);
         validateIntval(intval);
@@ -57,7 +57,7 @@ function lookup(char, charset, casing) {
     }
     return charset.indexOf(char);
 }
-function decode(strval, charset, validate = true, casing = null) {
+function decode(strval, charset = exports.BASE62CHARS, validate = false, casing = null) {
     if (validate)
         validateCharset(charset);
     if (!strval)
@@ -80,6 +80,8 @@ class Converter {
             casing = identifyCasing(charset);
         this.encode = (intval) => encode(intval, charset, false);
         this.decode = (str) => decode(str, charset, false, casing);
+        this.charset = charset;
+        this.casing = casing;
     }
 }
 exports.Converter = Converter;
@@ -95,5 +97,3 @@ exports.base26Decode = (strval) => exports.Base26.decode(strval);
 exports.Base36 = new Converter(exports.BASE36CHARS, UPPER);
 exports.base36Encode = (intval) => exports.Base36.encode(intval);
 exports.base36Decode = (strval) => exports.Base36.decode(strval);
-var x = exports.base26Decode('dw');
-console.log(x);
