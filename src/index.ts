@@ -3,7 +3,7 @@ export const BASE64CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 export const BASE36CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE26CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 export const BASE27CHARS = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-export enum CASING { Uppercase, Lowercase, Mixed }
+export enum CASING { Uppercase=1, Lowercase, Mixed }
 
 const UPPER = CASING.Uppercase
 const LOWER = CASING.Lowercase
@@ -49,10 +49,10 @@ function lookup(char:string, charset:string, casing:CASING) {
   return charset.indexOf(char)
 }
 
-export function decode(strval:string, charset=BASE62CHARS, validate=false, casing:CASING|null=null) {
+export function decode(strval:string, charset=BASE62CHARS, validate=false, casing?:CASING) {
   if(validate) validateCharset(charset)
   if(!strval) return 0
-  if(casing === null) casing = identifyCasing(charset)
+  if(!casing) casing = identifyCasing(charset)
   let base = charset.length
   return strval.split('').reduce((intval,char) => { 
     const charval = lookup(char, charset, casing as CASING)
@@ -62,18 +62,15 @@ export function decode(strval:string, charset=BASE62CHARS, validate=false, casin
 }
 
 export class Converter {
-  public charset:string // for convenience only
-  public casing:CASING // for convenience only
-  constructor(charset=BASE62CHARS, casing:CASING|null=null) {
+  public charset:string 
+  public casing:CASING 
+  constructor(charset=BASE62CHARS, casing?:CASING) {
       validateCharset(charset)
-      if(casing === null) casing = identifyCasing(charset)
-      this.encode = (intval:number) => encode(intval, charset, false)
-      this.decode = (str:string)    => decode(str,    charset, false, casing)
       this.charset = charset
-      this.casing = casing
+      this.casing = casing || identifyCasing(charset)
   }
-  encode : (intval:number) => string
-  decode : (strval:string) => number
+  encode = (intval:number) => encode(intval, this.charset, false)
+  decode = (str:string)    => decode(str,    this.charset, false, this.casing)
 }
 
 export const Base62 = new Converter(BASE62CHARS, MIXED)

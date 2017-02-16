@@ -1,5 +1,5 @@
-export as namespace IntToBaseNN;
-export = IntToBaseNN;
+export as namespace IntToBaseNN
+export = IntToBaseNN
 
 declare namespace IntToBaseNN {
   const BASE62CHARS : string
@@ -15,21 +15,13 @@ declare namespace IntToBaseNN {
   class Converter {
     charset:string
     casing:CASING
-    constructor(charset=BASE62CHARS, casing=CASING.Mixed)
+    constructor(charset?:string, casing?:CASING)
     encode : IEncodeFunc
     decode : IDecodeFunc
   }
 
-  function encode(intval:number, charset=BASE62CHARS, validate=false):string;
-  function decode(strval:string, charset=BASE62CHARS, validate=false, casing:CASING|null=null):number;
-
-  const Base62 : Converter
-  const base62Encode : IEncodeFunc
-  const base62Decode : IDecodeFunc
-
-  const Base64 : Converter
-  const base64Encode : IEncodeFunc
-  const base64Decode : IDecodeFunc
+  function encode(intval:number, charset?:string, validate?:boolean):string
+  function decode(strval:string, charset?:string, validate?:boolean, casing?:CASING):number
 
   const Base26 : Converter
   const base26Encode : IEncodeFunc
@@ -38,4 +30,12 @@ declare namespace IntToBaseNN {
   const Base36 : Converter
   const base36Encode : IEncodeFunc
   const base36Decode : IDecodeFunc
+
+  const Base62 : Converter
+  const base62Encode : IEncodeFunc
+  const base62Decode : IDecodeFunc
+
+  const Base64 : Converter
+  const base64Encode : IEncodeFunc
+  const base64Decode : IDecodeFunc
 }
