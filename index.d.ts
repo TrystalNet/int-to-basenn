@@ -1,5 +1,5 @@
-export as namespace IntToBaseNN
-export = IntToBaseNN
+export as namespace IntToBaseNN;
+export = IntToBaseNN;
 
 declare namespace IntToBaseNN {
   const BASE62CHARS : string

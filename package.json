@@ -1,6 +1,6 @@
 {
   "name": "@trystal/int-to-basenn",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Encode/decode numbers to/from any character set (base62, base26, 'abcd','!*=q',...) ",
   "main": "index.js",
   "scripts": {
